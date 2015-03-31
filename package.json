@@ -1,0 +1,37 @@
+{
+  "name": "ratelimit-middleware",
+  "version": "0.0.0",
+  "description": "ratelimit middleware for express",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "assert-plus": "0.1.5",
+    "lru-cache": "2.5.0"
+  },
+  "devDependencies": {
+    "after": "0.8.1",
+    "express": "4.12.3",
+    "mocha": "2.2.1",
+    "supertest": "0.15.0"
+  },
+  "scripts": {
+    "test": "mocha --ui bdd --reporter spec -- tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/defunctzombie/ratelimit-middleware.git"
+  },
+  "keywords": [
+    "ratelimit",
+    "middleware",
+    "throttle"
+  ],
+  "author": "Roman Shtylman <shtylman@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/defunctzombie/ratelimit-middleware/issues"
+  },
+  "homepage": "https://github.com/defunctzombie/ratelimit-middleware"
+}
