@@ -1,4 +1,4 @@
-# ratelimit-middleware
+# ratelimit-middleware [![Build Status](https://travis-ci.org/defunctzombie/ratelimit-middleware.svg?branch=master)](https://travis-ci.org/defunctzombie/ratelimit-middleware)
 
 Rate limit middleware for [expressjs](http://expressjs.com/)
 
