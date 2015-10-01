@@ -79,6 +79,80 @@ describe('ratelimit', function() {
             done(err);
         });
     });
+
+    it('should let ip addresses be used as override keys', function(done) {
+        done = after(2, done);
+
+        var app = express();
+        app.use(ratelimit({
+            burst: 1,
+            rate: 1,
+            xff: true,
+            overrides: {
+                '1.1.1.1': {
+                    burst: 2,
+                    rate: 2
+                }
+            }
+        }));
+
+        app.get('/', function(req, res, next) {
+            res.send('hello');
+        });
+
+        supertest(app)
+        .get('/')
+        .set('x-forwarded-for', '1.1.1.1')
+        .expect(200)
+        .end(function(err, res) {
+            done(err);
+        });
+
+        supertest(app)
+        .get('/')
+        .set('x-forwarded-for', '1.1.1.1')
+        .expect(200)
+        .end(function(err, res) {
+            done(err);
+        });
+    });
+
+    it('should let ip blocks be used as override keys', function(done) {
+        done = after(2, done);
+
+        var app = express();
+        app.use(ratelimit({
+            burst: 1,
+            rate: 1,
+            xff: true,
+            overrides: {
+                '1.1.1.192/27': {
+                    burst: 2,
+                    rate: 2
+                }
+            }
+        }));
+
+        app.get('/', function(req, res, next) {
+            res.send('hello');
+        });
+
+        supertest(app)
+        .get('/')
+        .set('x-forwarded-for', '1.1.1.222')
+        .expect(200)
+        .end(function(err, res) {
+            done(err);
+        });
+
+        supertest(app)
+        .get('/')
+        .set('x-forwarded-for', '1.1.1.222')
+        .expect(200)
+        .end(function(err, res) {
+            done(err);
+        });
+    });
 });
 
 function error_handler(err, req, res, next) {

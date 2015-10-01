@@ -4,6 +4,7 @@ var assert = require('assert-plus');
 var xor = require('./lib/xor');
 var TokenTable = require('./lib/TokenTable');
 var TokenBucket = require('./lib/TokenBucket');
+var Netmask = require('netmask').Netmask;
 
 /**
  * Creates an API rate limiter that can be plugged into the standard
@@ -67,6 +68,20 @@ function throttle(options) {
         throw new Error('(ip ^ username ^ xff)');
     }
 
+    for (key in options.overrides) {
+        var override = options.overrides[key];
+        try {
+            var block = new Netmask(key);
+
+            // Non-/32 blocks only
+            if (block.first !== block.last) {
+                override.block = block;
+            }
+        }
+        catch(err) {
+        }
+    }
+
     var message = options.message || 'You have exceeded your request rate of %s r/s.';
 
     var table = options.tokensTable || new TokenTable({size: options.maxKeys});
@@ -98,6 +113,16 @@ function throttle(options) {
 
             burst = options.overrides[attr].burst;
             rate = options.overrides[attr].rate;
+        }
+        else if (options.overrides) {
+            for (key in options.overrides) {
+                var override = options.overrides[key];
+                if (override.block && override.block.contains(attr)) {
+                    burst = override.burst;
+                    rate = override.rate;
+                    break;
+                }
+            }
         }
 
         if (!rate || !burst) {

@@ -53,13 +53,19 @@ TokenBucket to track each.
 
 ```js
 {
-   burst: 10,
-   rate: 0.5,
-   ip: true,
-   overrides: {
-      '192.168.1.1': {
-         burst: 0,
-         rate: 0    // unlimited
+    burst: 10,
+    rate: 0.5,
+    ip: true,
+    overrides: {
+        '192.168.1.1': {
+            burst: 0,
+            rate: 0    // unlimited
+        },
+        '192.168.1.192/27': {
+            burst: 0,
+            rate: 0
+        }
+      }
    }
 }
 ```
