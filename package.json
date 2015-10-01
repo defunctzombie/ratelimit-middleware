@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "assert-plus": "0.1.5",
-    "lru-cache": "2.5.0"
+    "lru-cache": "2.5.0",
+    "netmask": "1.0.5"
   },
   "devDependencies": {
     "after": "0.8.1",
