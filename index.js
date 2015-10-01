@@ -106,21 +106,27 @@ function throttle(options) {
         }
 
         // Check the overrides
-        if (options.overrides &&
-            options.overrides[attr] &&
-            options.overrides[attr].burst !== undefined &&
-            options.overrides[attr].rate !== undefined) {
+        if (options.overrides) {
+            var override = options.overrides[attr];
 
-            burst = options.overrides[attr].burst;
-            rate = options.overrides[attr].rate;
-        }
-        else if (options.overrides) {
-            for (key in options.overrides) {
-                var override = options.overrides[key];
-                if (override.block && override.block.contains(attr)) {
+            // If the rate limit attribute matches an override key, apply it
+            if (override) {
+                if (override.burst !== undefined && override.rate !== undefined) {
                     burst = override.burst;
                     rate = override.rate;
-                    break;
+                }
+            }
+
+            // Otherwise, see if the rate limit attribute matches any CIDR
+            // block overrides
+            else {
+                for (key in options.overrides) {
+                    override = options.overrides[key];
+                    if (override.block && override.block.contains(attr)) {
+                        burst = override.burst;
+                        rate = override.rate;
+                        break;
+                    }
                 }
             }
         }
