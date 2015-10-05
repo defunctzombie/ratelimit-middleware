@@ -79,6 +79,8 @@ function throttle(options) {
             }
         }
         catch(err) {
+            // The key may be a username, which would raise but should
+            // be ignored
         }
     }
 
@@ -122,7 +124,20 @@ function throttle(options) {
             else {
                 for (key in options.overrides) {
                     override = options.overrides[key];
-                    if (override.block && override.block.contains(attr)) {
+
+                    // If the attr is a comma-delimited list of IPs, get the first
+                    attr = attr.split(',')[0];
+                    var contained = false;
+
+                    try {
+                        contained = override.block && override.block.contains(attr);
+                    }
+                    catch(err) {
+                        // attr may be a username, which would raise but should
+                        // be ignored
+                    }
+
+                    if (contained) {
                         burst = override.burst;
                         rate = override.rate;
                         break;
