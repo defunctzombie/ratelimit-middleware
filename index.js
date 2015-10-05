@@ -107,6 +107,9 @@ function throttle(options) {
             return next(new Error('Invalid throttle configuration'));
         }
 
+        // If the attr is a comma-delimited list of IPs, get the first
+        attr = attr.split(',')[0];
+
         // Check the overrides
         if (options.overrides) {
             var override = options.overrides[attr];
@@ -124,9 +127,6 @@ function throttle(options) {
             else {
                 for (key in options.overrides) {
                     override = options.overrides[key];
-
-                    // If the attr is a comma-delimited list of IPs, get the first
-                    attr = attr.split(',')[0];
                     var contained = false;
 
                     try {
