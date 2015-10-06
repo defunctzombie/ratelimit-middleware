@@ -1,4 +1,4 @@
-# UNRELEASED
+# 1.2.0 (2015-10-05)
 
   * support multiple ips in x-forwarded-for headers (use first ip)
 
