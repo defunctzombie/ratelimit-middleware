@@ -89,7 +89,7 @@ app.use(function(err, req, res, next) {
 
    // example way to respond
    // NOTE, you will likely want to hide `err.message` for 5xx errors in production.
-   res.status(err.stauts || 500).send(err.message);
+   res.status(err.status || 500).send(err.message);
 });
 ```
 
